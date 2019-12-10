@@ -1,8 +1,6 @@
-/* NPM modules */
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-/* Material UI */
-/* Own modules */
+import { Route, Switch } from 'react-router-dom';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import { UserProvider } from '../../context/UserContext';
@@ -14,17 +12,8 @@ import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import Home from '../Home/Home';
 import Session from '../../models/Session';
-/* Assets */
-/* CSS */
 
-/**
- * Main App
- */
 export default class App extends Component {
-  /**
-   * Constructor
-   * @param {*} props
-   */
   constructor(props) {
     super(props);
     this.state = {
@@ -57,25 +46,19 @@ export default class App extends Component {
     return (
       <ErrorBoundary>
         <UserProvider value={userContextValue}>
-          <Router>
-            <Switch>
-              <Route path="/register" exact component={Register} />
-              <PrivateRoute path="/profile" exact component={Profile} />
-              <PrivateRoute
-                path="/advert/create"
-                exact
-                component={AdvertEdit}
-              />
-              <PrivateRoute
-                path="/advert/:id/edit"
-                exact
-                component={AdvertEdit}
-              />
-              <PrivateRoute path="/advert/:id" exact component={AdvertDetail} />
-              <PrivateRoute path="/" exact component={Home} />
-              <PrivateRoute component={Error404} />
-            </Switch>
-          </Router>
+          <Switch>
+            <Route path="/register" exact component={Register} />
+            <PrivateRoute path="/profile" exact component={Profile} />
+            <PrivateRoute path="/advert/create" exact component={AdvertEdit} />
+            <PrivateRoute
+              path="/advert/:id/edit"
+              exact
+              component={AdvertEdit}
+            />
+            <PrivateRoute path="/advert/:id" exact component={AdvertDetail} />
+            <PrivateRoute path="/" exact component={Home} />
+            <PrivateRoute component={Error404} />
+          </Switch>
         </UserProvider>
       </ErrorBoundary>
     );
