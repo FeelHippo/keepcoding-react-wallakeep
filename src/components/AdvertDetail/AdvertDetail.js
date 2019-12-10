@@ -8,7 +8,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 /* Own modules */
-import { withUserContext } from '../../context/UserContext';
 import NodepopAPI from '../../services/NodepopAPI';
 import Layout from '../Layout/Layout';
 /* Assets */
@@ -131,4 +130,4 @@ class AdvertDetail extends Component {
   }
 }
 
-export default withUserContext(AdvertDetail);
+export default AdvertDetail;

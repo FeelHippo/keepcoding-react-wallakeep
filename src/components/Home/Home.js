@@ -6,7 +6,6 @@ import SettingsInputHdmiIcon from '@material-ui/icons/SettingsInputHdmi';
 import Button from '@material-ui/core/Button';
 /* Own modules */
 import SearchPanel from '../SearchPanel/SearchPanel';
-import { withUserContext } from '../../context/UserContext';
 import NodepopAPI from '../../services/NodepopAPI';
 import AdvertCard from '../AdvertCard/AdvertCard';
 import Paginator from '../Paginator/Paginator';
@@ -199,4 +198,4 @@ class Home extends Component {
   };
 }
 
-export default compose(withUserContext, withSnackbar)(Home);
+export default compose(withSnackbar)(Home);

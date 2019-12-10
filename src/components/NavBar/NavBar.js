@@ -16,7 +16,6 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 /* Own modules */
-import { withUserContext } from '../../context/UserContext';
 /* Assets */
 import imageLogo from '../../assets/images/logo2.png';
 import imageAvatar from '../../assets/images/user.png';
@@ -148,4 +147,4 @@ class NavBar extends Component {
   };
 }
 
-export default withUserContext(NavBar);
+export default NavBar;

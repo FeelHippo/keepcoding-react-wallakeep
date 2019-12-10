@@ -1,7 +1,4 @@
-/* NPM modules */
 import React, { Component } from 'react';
-import { withSnackbar } from 'notistack';
-/* Material UI */
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -9,24 +6,15 @@ import FormControl from '@material-ui/core/FormControl';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
-/* Own modules */
-import { withUserContext } from '../../context/UserContext';
+
 import NodepopAPI from '../../services/NodepopAPI';
 import Session from '../../models/Session';
-import { compose } from '../../utils/Compose';
-/* Assets */
 import imageLogo from '../../assets/images/logo2.png';
-/* CSS */
 import './Register.css';
 
-/**
- * Register Form
- */
-class Register extends Component {
-  /**
-   * Constructor
-   */
+export default class Register extends Component {
   constructor(props) {
+    console.log(props);
     super(props);
     const { session } = props;
     this.state = {
@@ -37,9 +25,6 @@ class Register extends Component {
     };
   }
 
-  /**
-   * Render
-   */
   render() {
     const { name, surname, isRemember, error } = this.state;
     const { endAdornment } = this.props;
@@ -111,16 +96,10 @@ class Register extends Component {
     );
   }
 
-  /**
-   * Did mount
-   */
   componentDidMount() {
     this.checkApiConnection();
   }
 
-  /**
-   * Handle onSubmit event
-   */
   handleSubmit = async event => {
     const { session, setSession, enqueueSnackbar, history } = this.props;
     const { name, surname, isRemember } = this.state;
@@ -143,9 +122,6 @@ class Register extends Component {
     setSession(newSession, isRemember, () => history.push('/'));
   };
 
-  /**
-   * Cambio en un input
-   */
   handleChange = ({ target }) => {
     const { name, type, checked, value } = target;
     this.setState({
@@ -183,5 +159,3 @@ class Register extends Component {
       });
   };
 }
-
-export default compose(withUserContext, withSnackbar)(Register);

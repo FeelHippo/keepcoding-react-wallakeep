@@ -23,7 +23,6 @@ import CancelIcon from '@material-ui/icons/Cancel';
 /* Own modules */
 import Layout from '../Layout/Layout';
 import NodepopAPI from '../../services/NodepopAPI';
-import { withUserContext } from '../../context/UserContext';
 import { compose } from '../../utils/Compose';
 /* Assets */
 import imagePhoto from '../../assets/images/photo.png';
@@ -448,4 +447,4 @@ class AdvertEdit extends Component {
   };
 }
 
-export default compose(withUserContext, withSnackbar)(AdvertEdit);
+export default compose(withSnackbar)(AdvertEdit);

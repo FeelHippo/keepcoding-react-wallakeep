@@ -11,7 +11,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
 /* Own modules */
-import { withUserContext } from '../../context/UserContext';
 import Session from '../../models/Session';
 import { compose } from '../../utils/Compose';
 /* Assets */
@@ -170,4 +169,4 @@ class Profile extends Component {
   };
 }
 
-export default compose(withUserContext, withSnackbar)(Profile);
+export default compose(withSnackbar)(Profile);
