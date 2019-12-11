@@ -1,25 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createBrowserHistory } from 'history';
 
 import Root from './components/Root';
 import LocalStorage from './utils/Storage';
-import Session from './models/Session';
 import { configureStore } from './store';
+import { getSession, isUserRegistered } from './store/selectors';
 
-// generamos un objeto session (de localStorage o nuevo)
-const session = LocalStorage.readLocalStorage() || new Session();
+// histórico del browser
+const history = createBrowserHistory();
+
+// cargamos la session que hubiese en localStorage
+const session = LocalStorage.readLocalStorage() || undefined;
 
 // configuramos un store, pasando los datos de la sesion como estado inicial
-const store = configureStore({ session });
+const store = configureStore({ history })({ session });
 
 // cuando haya un cambio en el store, sincronizamos localStorage
 store.subscribe(() => {
-  const { session } = store.getState();
-  if (!session.name) {
-    LocalStorage.clearLocalStorage();
+  const state = store.getState();
+  if (isUserRegistered(state)) {
+    LocalStorage.saveLocalStorage(getSession(state));
   } else {
-    LocalStorage.saveLocalStorage(session);
+    LocalStorage.clearLocalStorage();
   }
 });
 
-ReactDOM.render(<Root store={store} />, document.getElementById('root'));
+ReactDOM.render(
+  <Root store={store} history={history} />,
+  document.getElementById('root'),
+);

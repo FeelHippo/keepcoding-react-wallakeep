@@ -13,9 +13,9 @@ const configureMiddleware = config => {
   return middlewares;
 };
 
-export const configureStore = preloadedState => {
+export const configureStore = config => preloadedState => {
   const rootReducer = combineReducers(reducers);
-  const middlewares = configureMiddleware();
+  const middlewares = configureMiddleware(config);
   const composeEnhancers = composeWithDevTools;
 
   return createStore(

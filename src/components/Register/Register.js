@@ -14,7 +14,6 @@ import './Register.css';
 
 export default class Register extends Component {
   constructor(props) {
-    console.log(props);
     super(props);
     const { session } = props;
     this.state = {
@@ -101,7 +100,7 @@ export default class Register extends Component {
   }
 
   handleSubmit = async event => {
-    const { session, setSession, enqueueSnackbar, history } = this.props;
+    const { userLogin, enqueueSnackbar } = this.props;
     const { name, surname, isRemember } = this.state;
     event.preventDefault();
 
@@ -113,13 +112,7 @@ export default class Register extends Component {
       return;
     }
     // Genero sesión y la guardo en LS si ha seleccionado "remember"
-    const newSession = new Session(
-      name,
-      surname,
-      session.apiUrl,
-      session.maxAdverts,
-    );
-    setSession(newSession, isRemember, () => history.push('/'));
+    userLogin(new Session(name, surname));
   };
 
   handleChange = ({ target }) => {

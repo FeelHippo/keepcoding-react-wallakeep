@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import PrivateRoute from '../PrivateRoute';
 import Profile from '../Profile/Profile';
 import AdvertEdit from '../AdvertEdit/AdvertEdit';
 import AdvertDetail from '../AdvertDetail/AdvertDetail';

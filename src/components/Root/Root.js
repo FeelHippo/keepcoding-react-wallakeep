@@ -1,14 +1,14 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 
 import App from '../App';
 import '../../index.css';
 
-const Root = ({ store, ...props }) => (
+const Root = ({ store, history, ...props }) => (
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <SnackbarProvider maxSnack={2}>
         <App {...props} />
       </SnackbarProvider>
