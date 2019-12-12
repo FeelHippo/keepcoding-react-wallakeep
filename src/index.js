@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import Root from './components/Root';
 import LocalStorage from './utils/Storage';
 import { configureStore } from './store';
-import { getSession, isUserRegistered } from './store/selectors';
+import * as types from './store/types';
 
 // histórico del browser
 const history = createBrowserHistory();
@@ -18,10 +18,12 @@ const store = configureStore({ history })({ session });
 
 // cuando haya un cambio en el store, sincronizamos localStorage
 store.subscribe(() => {
-  const state = store.getState();
-  if (isUserRegistered(state)) {
-    LocalStorage.saveLocalStorage(getSession(state));
-  } else {
+  const { lastAction, session } = store.getState();
+  if (lastAction.type === types.SESSION_SAVE && lastAction.remember) {
+    LocalStorage.saveLocalStorage(session);
+  }
+
+  if (lastAction.type === types.SESSION_CLEAR) {
     LocalStorage.clearLocalStorage();
   }
 });

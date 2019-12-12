@@ -1,15 +1,16 @@
 import * as types from './types';
 
-export const saveSession = session => ({
+export const saveSession = (session, remember) => ({
   type: types.SESSION_SAVE,
   session,
+  remember,
 });
 
 export const clearSession = () => ({
   type: types.SESSION_CLEAR,
 });
 
-export const userLogin = session => (dispatch, _getState, { history }) => {
-  dispatch(saveSession(session));
+export const userLogin = (...args) => (dispatch, _getState, { history }) => {
+  dispatch(saveSession(...args));
   history.push('/');
 };

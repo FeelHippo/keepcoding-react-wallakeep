@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -13,13 +13,19 @@ const configureMiddleware = config => {
   return middlewares;
 };
 
+const lastActionReducerEnhancer = reducer => (state, action) => ({
+  ...reducer(state, action),
+  lastAction: action,
+});
+
+const createRootReducer = compose(lastActionReducerEnhancer, combineReducers);
+
 export const configureStore = config => preloadedState => {
-  const rootReducer = combineReducers(reducers);
   const middlewares = configureMiddleware(config);
   const composeEnhancers = composeWithDevTools;
 
   return createStore(
-    rootReducer,
+    createRootReducer(reducers),
     preloadedState,
     composeEnhancers(applyMiddleware(...middlewares)),
   );

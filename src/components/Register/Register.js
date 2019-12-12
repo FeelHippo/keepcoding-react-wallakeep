@@ -20,12 +20,12 @@ export default class Register extends Component {
       error: false,
       name: session.name,
       surname: session.surname,
-      isRemember: false,
+      remember: false,
     };
   }
 
   render() {
-    const { name, surname, isRemember, error } = this.state;
+    const { name, surname, remember, error } = this.state;
     const { endAdornment } = this.props;
     return (
       <div className="Register">
@@ -70,12 +70,12 @@ export default class Register extends Component {
               />
             </FormControl>
             <FormControlLabel
-              name="isRemember"
+              name="remember"
               label="remember me"
               control={
                 <Checkbox
                   color="primary"
-                  checked={isRemember}
+                  checked={remember}
                   onChange={this.handleChange}
                 />
               }
@@ -101,7 +101,7 @@ export default class Register extends Component {
 
   handleSubmit = async event => {
     const { userLogin, enqueueSnackbar } = this.props;
-    const { name, surname, isRemember } = this.state;
+    const { name, surname, remember } = this.state;
     event.preventDefault();
 
     // Validación básica del formulario
@@ -112,7 +112,7 @@ export default class Register extends Component {
       return;
     }
     // Genero sesión y la guardo en LS si ha seleccionado "remember"
-    userLogin(new Session(name, surname));
+    userLogin(new Session(name, surname), remember);
   };
 
   handleChange = ({ target }) => {
