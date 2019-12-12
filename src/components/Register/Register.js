@@ -15,11 +15,10 @@ import './Register.css';
 export default class Register extends Component {
   constructor(props) {
     super(props);
-    const { session } = props;
     this.state = {
       error: false,
-      name: session.name,
-      surname: session.surname,
+      name: '',
+      surname: '',
       remember: false,
     };
   }
@@ -39,7 +38,7 @@ export default class Register extends Component {
             <FormControl>
               <Input
                 name="name"
-                value={name || ''}
+                value={name}
                 onChange={this.handleChange}
                 type="text"
                 placeholder="type your name"
@@ -56,7 +55,7 @@ export default class Register extends Component {
             <FormControl>
               <Input
                 name="surname"
-                value={surname || ''}
+                value={surname}
                 onChange={this.handleChange}
                 type="text"
                 placeholder="type your surname"

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,103 +19,94 @@ import imageAvatar from '../../assets/images/user.png';
 
 import './NavBar.css';
 
-export default class NavBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      anchorUserMenu: null,
-    };
-  }
+export default function NavBar({ session, userLogout }) {
+  const [anchorUserMenu, setAnchorUserMenu] = useState(null);
 
-  render() {
-    const { session, userLogout } = this.props;
-    return (
-      <AppBar title="Wallakeep" position="static" className="NavBar">
-        <Container>
-          <Toolbar className="NavBar__Toolbar">
-            <Link to="/" className="NavBar__Brand">
-              <img src={imageLogo} alt="logo" className="NavBar__Brand" />
-            </Link>
-            {session.name && (
-              <div>
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="menu-NavBar"
-                  aria-haspopup="true"
-                  onClick={this.handleMenu}
-                  color="inherit"
-                  className="NavBar__User"
+  const handleClose = () => setAnchorUserMenu(null);
+  const handleMenu = event => setAnchorUserMenu(event.currentTarget);
+
+  return (
+    <AppBar title="Wallakeep" position="static" className="NavBar">
+      <Container>
+        <Toolbar className="NavBar__Toolbar">
+          <Link to="/" className="NavBar__Brand">
+            <img src={imageLogo} alt="logo" className="NavBar__Brand" />
+          </Link>
+          {session.name && (
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-NavBar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+                className="NavBar__User"
+              >
+                <Avatar
+                  className="Avatar"
+                  alt={session.name}
+                  src={imageAvatar}
+                />
+                <span className="NavBar__User--hiddenXS">{session.name}</span>
+                <KeyboardArrowDownIcon />
+              </IconButton>
+              <Menu
+                className="NavBar__Menu"
+                id="menu-navbar"
+                anchorEl={anchorUserMenu}
+                keepMounted
+                open={!!anchorUserMenu}
+                onClose={handleClose}
+              >
+                <MenuItem
+                  className="NavBar__MenuItem"
+                  component={Link}
+                  to="/advert/create"
+                  onClick={handleClose}
                 >
-                  <Avatar
-                    className="Avatar"
-                    alt={session.name}
-                    src={imageAvatar}
+                  <ListItemIcon className="NavBar__MenuItemIcon">
+                    <PostAddIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    className="NavBar__MenuItemText"
+                    primary="Añádir anuncio"
                   />
-                  <span className="NavBar__User--hiddenXS">{session.name}</span>
-                  <KeyboardArrowDownIcon />
-                </IconButton>
-                <Menu
-                  className="NavBar__Menu"
-                  id="menu-navbar"
-                  anchorEl={this.state.anchorUserMenu}
-                  keepMounted
-                  open={this.state.anchorUserMenu ? true : false}
-                  onClose={this.handleClose}
+                </MenuItem>
+                <MenuItem
+                  className="NavBar__MenuItem"
+                  component={Link}
+                  to="/profile"
+                  onClick={handleClose}
                 >
-                  <MenuItem
-                    className="NavBar__MenuItem"
-                    component={Link}
-                    to="/advert/create"
-                    onClick={this.handleClose}
-                  >
-                    <ListItemIcon className="NavBar__MenuItemIcon">
-                      <PostAddIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText
-                      className="NavBar__MenuItemText"
-                      primary="Añádir anuncio"
-                    />
-                  </MenuItem>
-                  <MenuItem
-                    className="NavBar__MenuItem"
-                    component={Link}
-                    to="/profile"
-                    onClick={this.handleClose}
-                  >
-                    <ListItemIcon className="NavBar__MenuItemIcon">
-                      <AccountCircleIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText
-                      className="NavBar__MenuItemText"
-                      primary="Perfil"
-                    />
-                  </MenuItem>
-                  <MenuItem className="NavBar__MenuItem" onClick={userLogout}>
-                    <ListItemIcon className="NavBar__MenuItemIcon">
-                      <ExitToAppIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText
-                      className="NavBar__MenuItemText"
-                      primary="Desconectar"
-                    />
-                  </MenuItem>
-                </Menu>
-              </div>
-            )}
-            {!session && (
-              <div>
-                <IconButton color="inherit" className="NavBar__User">
-                  <AccountCircleIcon />
-                </IconButton>
-              </div>
-            )}
-          </Toolbar>
-        </Container>
-      </AppBar>
-    );
-  }
-
-  handleClose = () => this.setState({ anchorUserMenu: null });
-
-  handleMenu = event => this.setState({ anchorUserMenu: event.currentTarget });
+                  <ListItemIcon className="NavBar__MenuItemIcon">
+                    <AccountCircleIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    className="NavBar__MenuItemText"
+                    primary="Perfil"
+                  />
+                </MenuItem>
+                <MenuItem className="NavBar__MenuItem" onClick={userLogout}>
+                  <ListItemIcon className="NavBar__MenuItemIcon">
+                    <ExitToAppIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    className="NavBar__MenuItemText"
+                    primary="Desconectar"
+                  />
+                </MenuItem>
+              </Menu>
+            </div>
+          )}
+          {!session && (
+            <div>
+              <IconButton color="inherit" className="NavBar__User">
+                <AccountCircleIcon />
+              </IconButton>
+            </div>
+          )}
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
 }
