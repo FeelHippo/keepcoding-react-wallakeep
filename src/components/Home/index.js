@@ -1,7 +1,7 @@
 import { withSnackbar } from 'notistack';
 
-import Register from './Register';
+import Home from './Home';
 import { compose } from '../../utils/Compose';
 import withSession from '../../hocs/withSession';
 
-export default compose(withSession, withSnackbar)(Register);
+export default compose(withSession, withSnackbar)(Home);

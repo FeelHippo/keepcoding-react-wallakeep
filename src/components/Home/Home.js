@@ -1,29 +1,20 @@
 /* NPM modules */
 import React, { Component } from 'react';
-import { withSnackbar } from 'notistack';
-/* Material UI */
 import SettingsInputHdmiIcon from '@material-ui/icons/SettingsInputHdmi';
 import Button from '@material-ui/core/Button';
-/* Own modules */
+
 import SearchPanel from '../SearchPanel/SearchPanel';
 import NodepopAPI from '../../services/NodepopAPI';
 import AdvertCard from '../AdvertCard/AdvertCard';
 import Paginator from '../Paginator/Paginator';
-import { compose } from '../../utils/Compose';
 import Layout from '../Layout/Layout';
-/* Assets */
+
 import imageError from '../../assets/images/error.png';
 import imageSpinner from '../../assets/images/spinner.gif';
-/* CSS */
+
 import './Home.css';
 
-/**
- * Main App
- */
-class Home extends Component {
-  /**
-   * Constructor
-   */
+export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,9 +25,6 @@ class Home extends Component {
     };
   }
 
-  /**
-   * Render
-   */
   render() {
     // Variables para el paginado
     const { numPages, currentPage } = this.state;
@@ -44,7 +32,7 @@ class Home extends Component {
     const minAdvert = this.state.currentPage * session.maxAdverts;
     const maxAdvert =
       this.state.currentPage * session.maxAdverts + session.maxAdverts;
-    // Render
+
     return (
       <Layout containerClassName="Container__Fill">
         {this.state.loading && (
@@ -113,9 +101,6 @@ class Home extends Component {
     );
   }
 
-  /**
-   * Component did mount
-   */
   componentDidMount() {
     const { session } = this.props;
     // Obtengo los tags y los paso al estado para que re-renderice el panel de busquedas
@@ -125,9 +110,6 @@ class Home extends Component {
     this.getAdverts();
   }
 
-  /**
-   * Try to connect to the backend API
-   */
   getAdverts = () => {
     const { session, enqueueSnackbar } = this.props;
     const { getAdverts } = NodepopAPI(session.apiUrl);
@@ -153,9 +135,6 @@ class Home extends Component {
       });
   };
 
-  /**
-   * Gestiona el evento de búsqueda de anuncios
-   */
   handleSearch = filters => {
     const { session, enqueueSnackbar } = this.props;
     // Llamo a la API con los filtros recibido
@@ -182,9 +161,6 @@ class Home extends Component {
       });
   };
 
-  /**
-   * Retrocede una página
-   */
   handleMovePaginator = increment => {
     // Actualizo la pagina actual
     let { currentPage, numPages } = this.state;
@@ -197,5 +173,3 @@ class Home extends Component {
     }
   };
 }
-
-export default compose(withSnackbar)(Home);

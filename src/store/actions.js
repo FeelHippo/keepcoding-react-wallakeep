@@ -14,3 +14,8 @@ export const userLogin = (...args) => (dispatch, _getState, { history }) => {
   dispatch(saveSession(...args));
   history.push('/');
 };
+
+export const userLogout = (...args) => (dispatch, _getState, { history }) => {
+  dispatch(clearSession(...args));
+  history.push('/register');
+};

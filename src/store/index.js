@@ -13,7 +13,10 @@ const configureMiddleware = config => {
   return middlewares;
 };
 
-const lastActionReducerEnhancer = reducer => (state, action) => ({
+const lastActionReducerEnhancer = reducer => (
+  { lastAction, ...state },
+  action,
+) => ({
   ...reducer(state, action),
   lastAction: action,
 });

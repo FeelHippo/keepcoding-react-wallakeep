@@ -1,12 +1,7 @@
-/* NPM modules */
 import React from 'react';
-/* Material UI */
 import Container from '@material-ui/core/Container';
-/* Own modules */
-import NavBar from '../NavBar/NavBar';
+import NavBar from '../NavBar';
 import Footer from '../Footer/Footer';
-/* Assets */
-/* CSS */
 
 export default function Layout({ containerClassName, children, sectionTitle }) {
   return (

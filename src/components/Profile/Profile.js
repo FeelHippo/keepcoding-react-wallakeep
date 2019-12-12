@@ -1,8 +1,6 @@
-/* NPM modules */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { withSnackbar } from 'notistack';
-/* Material UI */
+
 import Layout from '../Layout/Layout';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
@@ -10,21 +8,13 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
-/* Own modules */
+
 import Session from '../../models/Session';
-import { compose } from '../../utils/Compose';
-/* Assets */
 import imagePhoto from '../../assets/images/user.png';
-/* CSS */
+
 import './Profile.css';
 
-/**
- * Main App
- */
-class Profile extends Component {
-  /**
-   * Constructor
-   */
+export default class Profile extends Component {
   constructor(props) {
     super(props);
     const { session } = props;
@@ -35,9 +25,6 @@ class Profile extends Component {
     };
   }
 
-  /**
-   * Render
-   */
   render() {
     const { name, surname, maxAdverts } = this.state;
     return (
@@ -102,7 +89,7 @@ class Profile extends Component {
               type="button"
               variant="contained"
               color="secondary"
-              onClick={this.handleReset}
+              onClick={this.props.userLogout}
               startIcon={<DeleteIcon />}
               to="/register"
               component={Link}
@@ -115,9 +102,6 @@ class Profile extends Component {
     );
   }
 
-  /**
-   * Cambio en un input
-   */
   handleChange = ({ target }) => {
     const { name, type, checked, value } = target;
     this.setState({
@@ -125,11 +109,8 @@ class Profile extends Component {
     });
   };
 
-  /**
-   * Manejador del submit del formulario
-   */
   handleSubmit = ev => {
-    const { session, setSession, enqueueSnackbar, history } = this.props;
+    const { session, saveSession, enqueueSnackbar } = this.props;
     const { name, surname, maxAdverts } = this.state;
     const parsedMaxAdverts = parseInt(maxAdverts);
     ev.preventDefault();
@@ -153,20 +134,9 @@ class Profile extends Component {
       session.apiUrl,
       parsedMaxAdverts,
     );
-    setSession(newSession, true, () => {
-      history.push('/');
-      enqueueSnackbar('Perfil de usuario actualizado correctamente.', {
-        variant: 'success',
-      });
+    saveSession(newSession, true);
+    enqueueSnackbar('Perfil de usuario actualizado correctamente.', {
+      variant: 'success',
     });
   };
-
-  /**
-   * Borra datos de sesión y desconecta
-   */
-  handleReset = () => {
-    this.props.clearSession();
-  };
 }
-
-export default compose(withSnackbar)(Profile);

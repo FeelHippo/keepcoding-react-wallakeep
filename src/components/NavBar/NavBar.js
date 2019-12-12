@@ -1,7 +1,5 @@
-/* NPM modules */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-/* Material UI */
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
@@ -15,20 +13,13 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-/* Own modules */
-/* Assets */
+
 import imageLogo from '../../assets/images/logo2.png';
 import imageAvatar from '../../assets/images/user.png';
-/* CSS */
+
 import './NavBar.css';
 
-/**
- * Componente NavBar
- */
-class NavBar extends Component {
-  /**
-   *
-   */
+export default class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,11 +27,8 @@ class NavBar extends Component {
     };
   }
 
-  /**
-   * Render del componente
-   */
   render() {
-    const { session, clearSession } = this.props;
+    const { session, userLogout } = this.props;
     return (
       <AppBar title="Wallakeep" position="static" className="NavBar">
         <Container>
@@ -60,7 +48,7 @@ class NavBar extends Component {
                 >
                   <Avatar
                     className="Avatar"
-                    alt={this.props.name}
+                    alt={session.name}
                     src={imageAvatar}
                   />
                   <span className="NavBar__User--hiddenXS">{session.name}</span>
@@ -102,12 +90,7 @@ class NavBar extends Component {
                       primary="Perfil"
                     />
                   </MenuItem>
-                  <MenuItem
-                    className="NavBar__MenuItem"
-                    onClick={() => clearSession()}
-                    to="/register"
-                    component={Link}
-                  >
+                  <MenuItem className="NavBar__MenuItem" onClick={userLogout}>
                     <ListItemIcon className="NavBar__MenuItemIcon">
                       <ExitToAppIcon fontSize="small" />
                     </ListItemIcon>
@@ -132,19 +115,7 @@ class NavBar extends Component {
     );
   }
 
-  /**
-   * Cierra el submenu
-   */
-  handleClose = () => {
-    this.setState({ anchorUserMenu: null });
-  };
+  handleClose = () => this.setState({ anchorUserMenu: null });
 
-  /**
-   * Abre el menu
-   */
-  handleMenu = event => {
-    this.setState({ anchorUserMenu: event.currentTarget });
-  };
+  handleMenu = event => this.setState({ anchorUserMenu: event.currentTarget });
 }
-
-export default NavBar;

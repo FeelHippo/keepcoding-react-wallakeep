@@ -3,11 +3,11 @@ import { Route, Switch } from 'react-router-dom';
 
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import PrivateRoute from '../PrivateRoute';
-import Profile from '../Profile/Profile';
+import Profile from '../Profile';
 import AdvertEdit from '../AdvertEdit/AdvertEdit';
 import AdvertDetail from '../AdvertDetail/AdvertDetail';
 import Register from '../Register';
-import Home from '../Home/Home';
+import Home from '../Home';
 import Error404 from '../Error404/Error404';
 
 const App = () => (
