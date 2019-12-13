@@ -30,34 +30,44 @@ export const tags = (state = defaultState.tags, action) => {
   if (action.type === types.TAGS_LOAD_SUCCESFULL) {
     return action.tags;
   }
+  if (action.type === types.ADVERTS_LOAD_SUCCESFULL && action.tags) {
+    return action.tags;
+  }
   return state;
 };
 
-export const adverts = (state = defaultState.adverts) => state;
+export const adverts = (state = defaultState.adverts, action) => {
+  if (action.type === types.SESSION_CLEAR) {
+    return defaultState.adverts;
+  }
+  if (action.type === types.ADVERTS_LOAD_SUCCESFULL) {
+    return action.adverts;
+  }
+  return state;
+};
 
 export const currentAdvert = (state = defaultState.currentAdvert) => state;
 
-export const ui = (state = defaultState.ui, { type, error }) => {
-  if (/_REQUEST$/.test(type)) {
+export const ui = (state = defaultState.ui, action) => {
+  if (/_REQUEST$/.test(action.type)) {
     return {
       loading: true,
       error: null,
     };
   }
 
-  if (/_SUCCESFULL$/.test(type)) {
+  if (/_SUCCESFULL$/.test(action.type)) {
     return {
       loading: false,
       error: null,
     };
   }
 
-  if (/_FAILURE$/.test(type)) {
+  if (/_FAILURE$/.test(action.type)) {
     return {
       loading: false,
-      error,
+      error: action.error,
     };
   }
-
   return state;
 };

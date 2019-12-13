@@ -17,12 +17,7 @@ import './Profile.css';
 export default class Profile extends Component {
   constructor(props) {
     super(props);
-    const { session } = props;
-    this.state = {
-      name: session.name,
-      surname: session.surname,
-      maxAdverts: session.maxAdverts,
-    };
+    this.state = props.session;
   }
 
   render() {
@@ -128,13 +123,10 @@ export default class Profile extends Component {
     }
 
     // Genero sesión y la guardo en LS
-    const newSession = new Session(
-      name,
-      surname,
-      session.apiUrl,
-      parsedMaxAdverts,
+    saveSession(
+      new Session(name, surname, session.apiUrl, parsedMaxAdverts),
+      true,
     );
-    saveSession(newSession, true);
     enqueueSnackbar('Perfil de usuario actualizado correctamente.', {
       variant: 'success',
     });

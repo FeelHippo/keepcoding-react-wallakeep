@@ -44,12 +44,67 @@ export const loadTags = () => async (
   if (areTagsLoaded(state)) {
     return;
   }
-  const { apiUrl } = getSession(state);
+
   dispatch(loadTagsRequest());
   try {
+    const { apiUrl } = getSession(state);
     const tags = await NodepopAPI(apiUrl).getTags();
     dispatch(loadTagsSuccesfull(tags));
   } catch (error) {
     dispatch(loadTagsFailure(error));
+  }
+};
+
+export const loadAdvertsRequest = () => ({
+  type: types.ADVERTS_LOAD_REQUEST,
+});
+
+export const loadAdvertsSuccesfull = (adverts, tags) => ({
+  type: types.ADVERTS_LOAD_SUCCESFULL,
+  adverts,
+  tags,
+});
+
+export const loadAdvertsFailure = error => ({
+  type: types.ADVERTS_LOAD_FAILURE,
+  error,
+});
+
+export const loadAdverts = () => async (
+  dispatch,
+  getState,
+  { services: { NodepopAPI } },
+) => {
+  const state = getState();
+
+  dispatch(loadAdvertsRequest());
+  try {
+    const { apiUrl } = getSession(state);
+    const { getAdverts, getTags } = NodepopAPI(apiUrl);
+    const apiPromises = [getAdverts()];
+    if (!areTagsLoaded(state)) {
+      apiPromises.push(getTags());
+    }
+    const results = await Promise.all(apiPromises);
+    dispatch(loadAdvertsSuccesfull(...results));
+  } catch (error) {
+    dispatch(loadAdvertsFailure(error));
+  }
+};
+
+export const searchAdverts = filters => async (
+  dispatch,
+  getState,
+  { services: { NodepopAPI } },
+) => {
+  const state = getState();
+
+  dispatch(loadAdvertsRequest());
+  try {
+    const { apiUrl } = getSession(state);
+    const adverts = await NodepopAPI(apiUrl).searchAdverts(filters);
+    dispatch(loadAdvertsSuccesfull(adverts));
+  } catch (error) {
+    dispatch(loadAdvertsFailure(error));
   }
 };
