@@ -1,5 +1,5 @@
 import * as types from './types';
-import { getSession, areTagsLoaded } from './selectors';
+import { getSession, areTagsLoaded, getAdvert } from './selectors';
 
 export const saveSession = (session, remember) => ({
   type: types.SESSION_SAVE,
@@ -104,6 +104,26 @@ export const searchAdverts = filters => async (
     const { apiUrl } = getSession(state);
     const adverts = await NodepopAPI(apiUrl).searchAdverts(filters);
     dispatch(loadAdvertsSuccesfull(adverts));
+  } catch (error) {
+    dispatch(loadAdvertsFailure(error));
+  }
+};
+
+export const loadAdvert = advertId => async (
+  dispatch,
+  getState,
+  { services: { NodepopAPI } },
+) => {
+  const state = getState();
+  if (getAdvert(state)(advertId)) {
+    return;
+  }
+
+  dispatch(loadAdvertsRequest());
+  try {
+    const { apiUrl } = getSession(state);
+    const advert = await NodepopAPI(apiUrl).getAdvert(advertId);
+    dispatch(loadAdvertsSuccesfull([advert]));
   } catch (error) {
     dispatch(loadAdvertsFailure(error));
   }

@@ -6,7 +6,6 @@ const defaultState = {
   session: new Session(),
   tags: [],
   adverts: [],
-  currentAdvert: null,
   ui: {
     loading: false,
     error: null,
@@ -45,8 +44,6 @@ export const adverts = (state = defaultState.adverts, action) => {
   }
   return state;
 };
-
-export const currentAdvert = (state = defaultState.currentAdvert) => state;
 
 export const ui = (state = defaultState.ui, action) => {
   if (/_REQUEST$/.test(action.type)) {

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import ErrorBoundary from '../ErrorBoundary';
 import PrivateRoute from '../PrivateRoute';
 import Profile from '../Profile';
-import AdvertEdit from '../AdvertEdit/AdvertEdit';
-import AdvertDetail from '../AdvertDetail/AdvertDetail';
+import AdvertEdit from '../AdvertEdit';
+import AdvertDetail from '../AdvertDetail';
 import Register from '../Register';
 import Home from '../Home';
-import Error404 from '../Error404/Error404';
+import Error404 from '../Error404';
 
 const App = () => (
   <ErrorBoundary>

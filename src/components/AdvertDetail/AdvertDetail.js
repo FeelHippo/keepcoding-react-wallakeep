@@ -1,66 +1,35 @@
-/* NPM modules */
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Moment from 'react-moment';
-/* Material UI */
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
-/* Own modules */
-import NodepopAPI from '../../services/NodepopAPI';
 import Layout from '../Layout/Layout';
-/* Assets */
 import imageSpinner from '../../assets/images/spinner.gif';
-/* CSS */
+
 import './AdvertDetail.css';
 
-/**
- * Main App
- */
 class AdvertDetail extends Component {
-  /**
-   * Constructor
-   */
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      error: false,
-      advert: null,
-    };
-  }
-
-  /**
-   * Component did mount
-   */
   componentDidMount() {
-    // Chequeo sesion del contexto, si no existe redirijo a register
     const {
-      session,
+      loadAdvert,
       match: { params },
     } = this.props;
-    // Call API to get advert detail
-    const { getAdvert } = NodepopAPI(session.apiUrl);
-    getAdvert(params.id)
-      .then(res => {
-        this.setState({
-          loading: false,
-          advert: res,
-        });
-      })
-      .catch(() => this.setState({ error: true, loading: false }));
+    loadAdvert(params.id);
   }
 
-  /**
-   * Render
-   */
   render() {
-    const { loading, error, advert } = this.state;
+    const { loading, error, advert = {} } = this.props;
     if (error) return <Redirect to="/notfound" />;
     return (
       <Layout sectionTitle="Detalle del anuncio">
-        {!loading && (
+        {loading ? (
+          <div className="Home__Loading">
+            <img src={imageSpinner} className="Home__Spinner" alt="spinner" />
+            <h2>Loading data from API</h2>
+          </div>
+        ) : (
           <article className="AdvertDetail">
             <div className="AdvertDetail__Main">
               <header className="AdvertDetail__Header">
@@ -118,12 +87,6 @@ class AdvertDetail extends Component {
               </Moment>
             </div>
           </article>
-        )}
-        {loading && (
-          <div className="Home__Loading">
-            <img src={imageSpinner} className="Home__Spinner" alt="spinner" />
-            <h2>Fetching data from API</h2>
-          </div>
         )}
       </Layout>
     );
