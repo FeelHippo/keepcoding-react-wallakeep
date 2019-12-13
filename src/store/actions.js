@@ -21,9 +21,18 @@ export const userLogout = (...args) => (dispatch, _getState, { history }) => {
   history.push('/register');
 };
 
-export const saveTags = tags => ({
-  type: types.TAGS_SAVE,
+export const loadTagsRequest = () => ({
+  type: types.TAGS_LOAD_REQUEST,
+});
+
+export const loadTagsSuccesfull = tags => ({
+  type: types.TAGS_LOAD_SUCCESFULL,
   tags,
+});
+
+export const loadTagsFailure = error => ({
+  type: types.TAGS_LOAD_FAILURE,
+  error,
 });
 
 export const loadTags = () => async (
@@ -36,6 +45,11 @@ export const loadTags = () => async (
     return;
   }
   const { apiUrl } = getSession(state);
-  const tags = await NodepopAPI(apiUrl).getTags();
-  dispatch(saveTags(tags));
+  dispatch(loadTagsRequest());
+  try {
+    const tags = await NodepopAPI(apiUrl).getTags();
+    dispatch(loadTagsSuccesfull(tags));
+  } catch (error) {
+    dispatch(loadTagsFailure(error));
+  }
 };

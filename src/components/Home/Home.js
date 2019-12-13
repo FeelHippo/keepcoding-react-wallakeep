@@ -18,8 +18,6 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
-      error: false,
       numPages: 0,
       currentPage: 0,
     };
@@ -28,20 +26,20 @@ export default class Home extends Component {
   render() {
     // Variables para el paginado
     const { numPages, currentPage } = this.state;
-    const { session, tags } = this.props;
+    const { session, tags, loading, error } = this.props;
     const minAdvert = this.state.currentPage * session.maxAdverts;
     const maxAdvert =
       this.state.currentPage * session.maxAdverts + session.maxAdverts;
 
     return (
       <Layout containerClassName="Container__Fill">
-        {this.state.loading && (
+        {loading && (
           <div className="Home__Loading">
             <img src={imageSpinner} className="Home__Spinner" alt="spinner" />
             <h2 className="Home__Subtitle">Fetching data from API</h2>
           </div>
         )}
-        {!this.state.loading && this.state.adverts && (
+        {!loading && this.state.adverts && (
           <div className="Home__Results">
             <SearchPanel handleSearch={this.handleSearch} tags={tags} />
             <Paginator
@@ -53,7 +51,7 @@ export default class Home extends Component {
               {this.state.adverts.length > 0 &&
                 this.state.adverts
                   .slice(minAdvert, maxAdvert)
-                  .map((advert, index) => (
+                  .map(advert => (
                     <AdvertCard
                       key={advert._id}
                       id={advert._id}
@@ -79,7 +77,7 @@ export default class Home extends Component {
             />
           </div>
         )}
-        {this.state.error && (
+        {error && (
           <div className="Home__Error">
             <img src={imageError} className="Home__Spinner" alt="spinner" />
             <h2 className="Home__Subtitle">Failed to connect</h2>
@@ -109,8 +107,6 @@ export default class Home extends Component {
       .then(res => {
         const numPages = Math.ceil(res.length / session.maxAdverts);
         this.setState({
-          error: false,
-          loading: false,
           adverts: res,
           currentPage: 0,
           numPages: numPages,
@@ -119,10 +115,6 @@ export default class Home extends Component {
       .catch(() => {
         enqueueSnackbar('Error conectando con la API', {
           variant: 'error',
-        });
-        this.setState({
-          error: true,
-          loading: false,
         });
       });
   };
@@ -135,8 +127,6 @@ export default class Home extends Component {
       .then(res => {
         const numPages = Math.ceil(res.length / session.maxAdverts);
         this.setState({
-          error: false,
-          loading: false,
           adverts: res,
           currentPage: 0,
           numPages: numPages,
@@ -145,10 +135,6 @@ export default class Home extends Component {
       .catch(() => {
         enqueueSnackbar('Error conectando con la API', {
           variant: 'error',
-        });
-        this.setState({
-          error: true,
-          loading: false,
         });
       });
   };

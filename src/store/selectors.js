@@ -8,3 +8,5 @@ export const isUserRegistered = state => {
 export const getTags = state => state.tags;
 
 export const areTagsLoaded = state => !!getTags(state).length;
+
+export const getUi = state => state.ui;
