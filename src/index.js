@@ -4,6 +4,7 @@ import { createBrowserHistory } from 'history';
 
 import Root from './components/Root';
 import LocalStorage from './utils/Storage';
+import NodepopAPI from './services/NodepopAPI';
 import { configureStore } from './store';
 import * as types from './store/types';
 
@@ -14,7 +15,12 @@ const history = createBrowserHistory();
 const session = LocalStorage.readLocalStorage() || undefined;
 
 // configuramos un store, pasando los datos de la sesion como estado inicial
-const store = configureStore({ history })({ session });
+const store = configureStore({
+  history,
+  services: { NodepopAPI },
+})({
+  session,
+});
 
 // cuando haya un cambio en el store, sincronizamos localStorage
 store.subscribe(() => {

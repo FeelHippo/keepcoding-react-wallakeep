@@ -1,5 +1,5 @@
-/* NPM modules */
 import React, { Component } from 'react';
+
 import SettingsInputHdmiIcon from '@material-ui/icons/SettingsInputHdmi';
 import Button from '@material-ui/core/Button';
 
@@ -28,7 +28,7 @@ export default class Home extends Component {
   render() {
     // Variables para el paginado
     const { numPages, currentPage } = this.state;
-    const { session } = this.props;
+    const { session, tags } = this.props;
     const minAdvert = this.state.currentPage * session.maxAdverts;
     const maxAdvert =
       this.state.currentPage * session.maxAdverts + session.maxAdverts;
@@ -43,10 +43,7 @@ export default class Home extends Component {
         )}
         {!this.state.loading && this.state.adverts && (
           <div className="Home__Results">
-            <SearchPanel
-              handleSearch={this.handleSearch}
-              tags={this.state.tags}
-            />
+            <SearchPanel handleSearch={this.handleSearch} tags={tags} />
             <Paginator
               numPages={numPages}
               currentPage={currentPage}
@@ -102,12 +99,7 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    const { session } = this.props;
-    // Obtengo los tags y los paso al estado para que re-renderice el panel de busquedas
-    const { getTags } = NodepopAPI(session.apiUrl);
-    getTags().then(res => this.setState({ tags: res }));
-    // Obtengo los anuncios
-    this.getAdverts();
+    this.props.loadTags().then(this.getAdverts);
   }
 
   getAdverts = () => {

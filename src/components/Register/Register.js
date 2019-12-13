@@ -7,7 +7,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 
-import NodepopAPI from '../../services/NodepopAPI';
 import Session from '../../models/Session';
 import imageLogo from '../../assets/images/logo2.png';
 import './Register.css';
@@ -122,12 +121,9 @@ export default class Register extends Component {
   };
 
   checkApiConnection = () => {
-    const { session, enqueueSnackbar } = this.props;
-    // Recuperar tags de la API para probar la conexion
-    const { getTags } = NodepopAPI(session.apiUrl);
-    getTags()
+    const { loadTags, enqueueSnackbar } = this.props;
+    loadTags()
       .then(() => {
-        // Conectado OK a la API
         this.setState(
           {
             error: false,

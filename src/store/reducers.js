@@ -2,25 +2,33 @@ import * as types from './types';
 
 import Session from '../models/Session';
 
-const initialState = {
+const defaultState = {
   session: new Session(),
+  tags: [],
   adverts: [],
   currentAdvert: null,
 };
 
-export const session = (state = initialState.session, action) => {
+export const session = (state = defaultState.session, action) => {
   switch (action.type) {
     case types.SESSION_SAVE:
       return { ...state, ...action.session };
 
     case types.SESSION_CLEAR:
-      return initialState.session;
+      return defaultState.session;
 
     default:
       return state;
   }
 };
 
-export const adverts = (state = initialState.adverts) => state;
+export const tags = (state = defaultState.tags, action) => {
+  if (action.type === types.TAGS_SAVE) {
+    return action.tags;
+  }
+  return state;
+};
 
-export const currentAdvert = (state = initialState.currentAdvert) => state;
+export const adverts = (state = defaultState.adverts) => state;
+
+export const currentAdvert = (state = defaultState.currentAdvert) => state;
