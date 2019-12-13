@@ -121,9 +121,10 @@ export default class Register extends Component {
   };
 
   checkApiConnection = () => {
-    const { loadTags, enqueueSnackbar } = this.props;
-    loadTags()
+    const { checkApi, enqueueSnackbar } = this.props;
+    checkApi()
       .then(() => {
+        // Conectado OK a la API
         this.setState(
           {
             error: false,

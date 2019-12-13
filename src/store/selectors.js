@@ -9,8 +9,6 @@ export const isUserRegistered = state => {
 
 export const getTags = state => state.tags;
 
-export const areTagsLoaded = state => Boolean(getTags(state).length);
-
 export const getAdverts = state => state.adverts;
 
 export const getNumAdverts = state => getAdverts(state).length;

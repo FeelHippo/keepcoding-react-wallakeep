@@ -1,5 +1,5 @@
 import * as types from './types';
-import { getSession, areTagsLoaded, getAdvert } from './selectors';
+import { getSession, getAdvert } from './selectors';
 
 export const saveSession = (session, remember) => ({
   type: types.SESSION_SAVE,
@@ -41,9 +41,6 @@ export const loadTags = () => async (
   { services: { NodepopAPI } },
 ) => {
   const state = getState();
-  if (areTagsLoaded(state)) {
-    return;
-  }
 
   dispatch(loadTagsRequest());
   try {
@@ -55,14 +52,23 @@ export const loadTags = () => async (
   }
 };
 
+export const checkApi = () => async (
+  _dispatch,
+  getState,
+  { services: { NodepopAPI } },
+) => {
+  const state = getState();
+  const { apiUrl } = getSession(state);
+  return NodepopAPI(apiUrl).getTags();
+};
+
 export const loadAdvertsRequest = () => ({
   type: types.ADVERTS_LOAD_REQUEST,
 });
 
-export const loadAdvertsSuccesfull = (adverts, tags) => ({
+export const loadAdvertsSuccesfull = adverts => ({
   type: types.ADVERTS_LOAD_SUCCESFULL,
   adverts,
-  tags,
 });
 
 export const loadAdvertsFailure = error => ({
@@ -80,13 +86,8 @@ export const loadAdverts = () => async (
   dispatch(loadAdvertsRequest());
   try {
     const { apiUrl } = getSession(state);
-    const { getAdverts, getTags } = NodepopAPI(apiUrl);
-    const apiPromises = [getAdverts()];
-    if (!areTagsLoaded(state)) {
-      apiPromises.push(getTags());
-    }
-    const results = await Promise.all(apiPromises);
-    dispatch(loadAdvertsSuccesfull(...results));
+    const adverts = await NodepopAPI(apiUrl).getAdverts();
+    dispatch(loadAdvertsSuccesfull(adverts));
   } catch (error) {
     dispatch(loadAdvertsFailure(error));
   }

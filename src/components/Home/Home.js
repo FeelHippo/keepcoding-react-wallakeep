@@ -56,7 +56,6 @@ export default class Home extends Component {
     const {
       session,
       tags,
-      areTagsLoaded,
       adverts,
       numAdverts,
       numPages,
@@ -69,9 +68,7 @@ export default class Home extends Component {
 
     return (
       <Layout containerClassName="Container__Fill">
-        {areTagsLoaded && (
-          <SearchPanel handleSearch={this.getAdverts} tags={tags} />
-        )}
+        <SearchPanel handleSearch={this.getAdverts} tags={tags} />
         {loading ? (
           <div className="Home__Loading">
             <img src={imageSpinner} className="Home__Spinner" alt="spinner" />

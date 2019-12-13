@@ -29,9 +29,6 @@ export const tags = (state = defaultState.tags, action) => {
   if (action.type === types.TAGS_LOAD_SUCCESFULL) {
     return action.tags;
   }
-  if (action.type === types.ADVERTS_LOAD_SUCCESFULL && action.tags) {
-    return action.tags;
-  }
   return state;
 };
 

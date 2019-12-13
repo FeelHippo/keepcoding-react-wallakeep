@@ -1,8 +1,6 @@
-/* NPM modules */
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { withSnackbar } from 'notistack';
-/* Material UI */
+
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -20,13 +18,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import SaveIcon from '@material-ui/icons/Save';
 import CheckIcon from '@material-ui/icons/Check';
 import CancelIcon from '@material-ui/icons/Cancel';
-/* Own modules */
+
 import Layout from '../Layout/Layout';
-import NodepopAPI from '../../services/NodepopAPI';
-import { compose } from '../../utils/Compose';
-/* Assets */
+
 import imagePhoto from '../../assets/images/photo.png';
-/* CSS */
+
 import './AdvertEdit.css';
 import Advert from '../../models/Advert';
 
@@ -39,36 +35,20 @@ const defaultAdvert = {
   photo: '',
 };
 
-/**
- * Main App
- */
-class AdvertEdit extends Component {
-  /**
-   * Constructor
-   */
+export default class AdvertEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
       photoTemp: '',
       openModal: false,
-      tags: [],
-      advert: defaultAdvert,
-      loading: false,
-      error: false,
+      advert: props.advert || defaultAdvert,
     };
   }
 
-  /**
-   * Component did mount
-   */
   componentDidMount() {
-    // Chequeo sesion del contexto, si no existe redirijo a register
-    // Obtengo los tags y luego el anuncio si estoy en edicion
-    this.getTags().then(() => {
-      if (this.isEditMode()) {
-        this.getAdvert();
-      }
-    });
+    if (this.isEditMode()) {
+      this.getAdvert();
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -82,16 +62,18 @@ class AdvertEdit extends Component {
     if (!this.isEditMode(prevProps) && this.isEditMode()) {
       this.getAdvert();
     }
+    if (this.isEditMode() && !prevProps.advert && this.props.advert) {
+      this.setState({ advert: this.props.advert });
+    }
   }
 
-  /**
-   * Render
-   */
   render() {
     const {
       match: { params },
+      tags,
+      error,
     } = this.props;
-    const { advert, tags, openModal, photoTemp, error } = this.state;
+    const { advert, openModal, photoTemp } = this.state;
     const editMode = this.isEditMode();
     if (error) return <Redirect to="/notfound" />;
     return (
@@ -280,43 +262,17 @@ class AdvertEdit extends Component {
     const {
       match: { params },
     } = props || this.props;
-    return !!params.id;
-  };
-
-  getTags = async () => {
-    const { session } = this.props;
-    const { getTags } = NodepopAPI(session.apiUrl);
-    const tags = await getTags();
-    this.setState({ tags });
+    return params.id;
   };
 
   getAdvert = () => {
     const {
-      session,
+      loadAdvert,
       match: { params },
     } = this.props;
-
-    const { getAdvert } = NodepopAPI(session.apiUrl);
-    this.setState({ loading: true }, () => {
-      getAdvert(params.id)
-        .then(res => {
-          this.setState({
-            loading: false,
-            advert: res,
-          });
-        })
-        .catch(() =>
-          this.setState({
-            loading: false,
-            error: true,
-          }),
-        );
-    });
+    loadAdvert(params.id);
   };
 
-  /**
-   * Cambio en un input tipo texto
-   */
   handleChange = ({ target }) => {
     const { advert } = this.state;
     advert[target.name] = target.value;
@@ -325,9 +281,6 @@ class AdvertEdit extends Component {
     });
   };
 
-  /**
-   * Cambio en un input tipo number
-   */
   handleChangeNumber = ({ target }) => {
     const { advert } = this.state;
     advert[target.name] = parseFloat(target.value);
@@ -338,9 +291,6 @@ class AdvertEdit extends Component {
     }
   };
 
-  /**
-   * Selectores de tipo multiple choice
-   */
   handleChangeMultiple = ({ target }) => {
     // Obtengo el estado, actualizo los tags seleccionados
     const { advert } = this.state;
@@ -349,56 +299,50 @@ class AdvertEdit extends Component {
     this.setState({ advert });
   };
 
-  /**
-   * Manejador del submit del formulario
-   */
-  handleSubmit = ev => {
-    const { session, enqueueSnackbar, history } = this.props;
-    ev.preventDefault();
-    const { postAdvert, editAdvert } = NodepopAPI(session.apiUrl);
-    // Creo un anuncio con los datos del estado si es válido
-    const advert = new Advert(this.state.advert);
-    if (advert.isValid()) {
-      if (this.isEditMode()) {
-        // PUT
-        editAdvert(advert)
-          .then(res => {
-            enqueueSnackbar('OK. Anuncio editado con exito.', {
-              variant: 'success',
-            });
-            history.push(`/advert/${res._id}`);
-          })
-          .catch(error =>
-            enqueueSnackbar('Error editando anuncio.', {
-              variant: 'error',
-            }),
-          );
-      } else {
-        // POST
-        postAdvert(advert)
-          .then(res => {
-            enqueueSnackbar('OK. Anuncio creado con exito.', {
-              variant: 'success',
-            });
-            history.push(`/advert/${res._id}`);
-          })
-          .catch(error => {
-            enqueueSnackbar('Error creando anuncio.', {
-              variant: 'error',
-            });
-          });
-      }
-    } else {
-      // El anuncio no es completo. Error
-      enqueueSnackbar('Los datos del anuncio no están completos', {
-        variant: 'error',
-      });
-    }
-  };
+  // handleSubmit = ev => {
+  //   const { session, enqueueSnackbar, history } = this.props;
+  //   ev.preventDefault();
+  //   const { postAdvert, editAdvert } = NodepopAPI(session.apiUrl);
+  //   // Creo un anuncio con los datos del estado si es válido
+  //   const advert = new Advert(this.state.advert);
+  //   if (advert.isValid()) {
+  //     if (this.isEditMode()) {
+  //       // PUT
+  //       editAdvert(advert)
+  //         .then(res => {
+  //           enqueueSnackbar('OK. Anuncio editado con exito.', {
+  //             variant: 'success',
+  //           });
+  //           history.push(`/advert/${res._id}`);
+  //         })
+  //         .catch(error =>
+  //           enqueueSnackbar('Error editando anuncio.', {
+  //             variant: 'error',
+  //           }),
+  //         );
+  //     } else {
+  //       // POST
+  //       postAdvert(advert)
+  //         .then(res => {
+  //           enqueueSnackbar('OK. Anuncio creado con exito.', {
+  //             variant: 'success',
+  //           });
+  //           history.push(`/advert/${res._id}`);
+  //         })
+  //         .catch(error => {
+  //           enqueueSnackbar('Error creando anuncio.', {
+  //             variant: 'error',
+  //           });
+  //         });
+  //     }
+  //   } else {
+  //     // El anuncio no es completo. Error
+  //     enqueueSnackbar('Los datos del anuncio no están completos', {
+  //       variant: 'error',
+  //     });
+  //   }
+  // };
 
-  /**
-   * Handle open modal
-   */
   handleSwitchOpen = () => {
     this.setState(({ advert, openModal }) => ({
       photoTemp: advert.photo,
@@ -406,9 +350,6 @@ class AdvertEdit extends Component {
     }));
   };
 
-  /**
-   * Hanle close modal
-   */
   handleChangePhoto = () => {
     // Actualizo la imagen y cierro el modal
     if (this.state.photoTemp) {
@@ -446,5 +387,3 @@ class AdvertEdit extends Component {
     return <div />;
   };
 }
-
-export default compose(withSnackbar)(AdvertEdit);

@@ -7,6 +7,11 @@ import LocalStorage from './utils/Storage';
 import NodepopAPI from './services/NodepopAPI';
 import { configureStore } from './store';
 import * as types from './store/types';
+import { loadTags } from './store/actions';
+
+// funcion render de la applicacion
+const renderApp = props =>
+  ReactDOM.render(<Root {...props} />, document.getElementById('root'));
 
 // histórico del browser
 const history = createBrowserHistory();
@@ -32,9 +37,12 @@ store.subscribe(() => {
   if (lastAction.type === types.SESSION_CLEAR) {
     LocalStorage.clearLocalStorage();
   }
+
+  // cuando tengamos las tags en el store, renderizamos la app
+  if (lastAction.type === types.TAGS_LOAD_SUCCESFULL) {
+    renderApp({ store, history });
+  }
 });
 
-ReactDOM.render(
-  <Root store={store} history={history} />,
-  document.getElementById('root'),
-);
+// lanzamos una accion inicial para cargar las tags
+store.dispatch(loadTags());
