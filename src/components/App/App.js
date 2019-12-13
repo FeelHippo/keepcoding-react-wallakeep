@@ -15,7 +15,7 @@ const App = () => (
     <Switch>
       <Route path="/register" exact component={Register} />
       <PrivateRoute path="/profile" exact component={Profile} />
-      <PrivateRoute path="/advert/create" exact component={AdvertEdit} />
+      <PrivateRoute path="/advert/new" exact component={AdvertEdit} />
       <PrivateRoute path="/advert/:id/edit" exact component={AdvertEdit} />
       <PrivateRoute path="/advert/:id" exact component={AdvertDetail} />
       <PrivateRoute path="/" exact component={Home} />

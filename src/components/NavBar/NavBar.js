@@ -61,7 +61,7 @@ export default function NavBar({ session, userLogout }) {
                 <MenuItem
                   className="NavBar__MenuItem"
                   component={Link}
-                  to="/advert/create"
+                  to="/advert/new"
                   onClick={handleClose}
                 >
                   <ListItemIcon className="NavBar__MenuItemIcon">

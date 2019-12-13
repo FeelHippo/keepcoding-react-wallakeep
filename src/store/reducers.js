@@ -33,13 +33,24 @@ export const tags = (state = defaultState.tags, action) => {
 };
 
 export const adverts = (state = defaultState.adverts, action) => {
-  if (action.type === types.SESSION_CLEAR) {
-    return defaultState.adverts;
+  switch (action.type) {
+    case types.SESSION_CLEAR:
+      return defaultState.adverts;
+
+    case types.ADVERTS_LOAD_SUCCESFULL:
+      return action.adverts;
+
+    case types.ADVERTS_CREATE_SUCCESFULL:
+      return [...state, action.advert];
+
+    case types.ADVERTS_UPDATE_SUCCESFULL:
+      return state.map(advert =>
+        advert._id === action.advert._id ? action.advert : advert,
+      );
+
+    default:
+      return state;
   }
-  if (action.type === types.ADVERTS_LOAD_SUCCESFULL) {
-    return action.adverts;
-  }
-  return state;
 };
 
 export const ui = (state = defaultState.ui, action) => {

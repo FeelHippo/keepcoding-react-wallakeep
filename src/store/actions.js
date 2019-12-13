@@ -76,6 +76,34 @@ export const loadAdvertsFailure = error => ({
   error,
 });
 
+export const createAdvertsRequest = () => ({
+  type: types.ADVERTS_CREATE_REQUEST,
+});
+
+export const createAdvertsSuccesfull = advert => ({
+  type: types.ADVERTS_CREATE_SUCCESFULL,
+  advert,
+});
+
+export const createAdvertsFailure = error => ({
+  type: types.ADVERTS_CREATE_FAILURE,
+  error,
+});
+
+export const updateAdvertsRequest = () => ({
+  type: types.ADVERTS_UPDATE_REQUEST,
+});
+
+export const updateAdvertsSuccesfull = advert => ({
+  type: types.ADVERTS_UPDATE_SUCCESFULL,
+  advert,
+});
+
+export const updateAdvertsFailure = error => ({
+  type: types.ADVERTS_UPDATE_FAILURE,
+  error,
+});
+
 export const loadAdverts = () => async (
   dispatch,
   getState,
@@ -127,5 +155,66 @@ export const loadAdvert = advertId => async (
     dispatch(loadAdvertsSuccesfull([advert]));
   } catch (error) {
     dispatch(loadAdvertsFailure(error));
+  }
+};
+
+// export const createAdvert = advert => async (
+//   dispatch,
+//   getState,
+//   { services: { NodepopAPI }, history },
+// ) => {
+//   const state = getState();
+//   dispatch(createAdvertsRequest());
+//   try {
+//     const { apiUrl } = getSession(state);
+//     const createdAdvert = await NodepopAPI(apiUrl).postAdvert(advert);
+//     dispatch(createAdvertsSuccesfull(createdAdvert));
+//     history.push(`/advert/${createdAdvert._id}`);
+//   } catch (error) {
+//     dispatch(createAdvertsFailure(error));
+//   }
+// };
+
+// export const updateAdvert = advert => async (
+//   dispatch,
+//   getState,
+//   { services: { NodepopAPI }, history },
+// ) => {
+//   const state = getState();
+//   dispatch(updateAdvertsRequest());
+//   try {
+//     const { apiUrl } = getSession(state);
+//     const updatedAdvert = await NodepopAPI(apiUrl).editAdvert(advert);
+//     dispatch(updateAdvertsSuccesfull(updatedAdvert));
+//     history.push(`/advert/${updatedAdvert._id}`);
+//   } catch (error) {
+//     dispatch(createAdvertsFailure(error));
+//   }
+// };
+
+export const createOrUpdateAdvert = advert => async (
+  dispatch,
+  getState,
+  { services: { NodepopAPI }, history },
+) => {
+  const state = getState();
+  const { apiUrl } = getSession(state);
+  const { postAdvert, editAdvert } = NodepopAPI(apiUrl);
+
+  const create = !advert._id;
+  const actions = {
+    request: create ? createAdvertsRequest : updateAdvertsRequest,
+    api: create ? postAdvert : editAdvert,
+    succesfull: create ? createAdvertsSuccesfull : updateAdvertsSuccesfull,
+    failure: create ? createAdvertsFailure : updateAdvertsFailure,
+  };
+
+  dispatch(actions.request());
+  try {
+    const newAdvert = await actions.api(advert);
+    dispatch(actions.succesfull(newAdvert));
+    history.push(`/advert/${newAdvert._id}`);
+  } catch (error) {
+    dispatch(actions.failure(error));
   }
 };

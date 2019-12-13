@@ -6,7 +6,12 @@ import {
   getNumPages,
   getAdvert,
 } from '../store/selectors';
-import { loadAdverts, searchAdverts, loadAdvert } from '../store/actions';
+import {
+  loadAdverts,
+  searchAdverts,
+  loadAdvert,
+  createOrUpdateAdvert,
+} from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
   adverts: getAdverts(state),
@@ -19,6 +24,7 @@ const mapDispatchToProps = {
   loadAdverts,
   searchAdverts,
   loadAdvert,
+  createOrUpdateAdvert,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps);

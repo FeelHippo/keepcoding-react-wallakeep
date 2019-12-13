@@ -52,20 +52,117 @@ export default class AdvertEdit extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.isEditMode(prevProps) && !this.isEditMode()) {
-      this.setState({
-        photoTemp: '',
-        openModal: false,
-        advert: defaultAdvert,
-      });
-    }
-    if (!this.isEditMode(prevProps) && this.isEditMode()) {
-      this.getAdvert();
-    }
     if (this.isEditMode() && !prevProps.advert && this.props.advert) {
       this.setState({ advert: this.props.advert });
     }
   }
+
+  isEditMode = () => this.props.match.params.id;
+
+  getAdvert = () => {
+    const { loadAdvert, match } = this.props;
+    loadAdvert(match.params.id);
+  };
+
+  errorNotify = message =>
+    this.props.enqueueSnackbar(message, {
+      variant: 'error',
+    });
+
+  successNotify = message =>
+    this.props.enqueueSnackbar(message, {
+      variant: 'success',
+    });
+
+  handleChange = ({ target: { name, value } }) =>
+    this.setState(({ advert }) => ({
+      advert: {
+        ...advert,
+        [name]: value,
+      },
+    }));
+
+  handleChangeNumber = ({ target: { name, value } }) =>
+    this.setState(({ advert }) => ({
+      advert: {
+        ...advert,
+        [name]: parseFloat(value),
+      },
+    }));
+
+  handleChangeMultiple = ({ target: { value } }) =>
+    this.setState(({ advert }) => ({
+      advert: {
+        ...advert,
+        tags: value,
+      },
+    }));
+
+  handleSubmit = ev => {
+    const { createOrUpdateAdvert } = this.props;
+    ev.preventDefault();
+    const editMode = this.isEditMode();
+    const advert = new Advert(this.state.advert);
+    if (advert.isValid()) {
+      createOrUpdateAdvert(advert)
+        .then(() =>
+          this.successNotify(
+            editMode
+              ? 'OK. Anuncio editado con exito.'
+              : 'OK. Anuncio creado con exito.',
+          ),
+        )
+        .catch(() =>
+          this.errorNotify(
+            editMode ? 'Error editando anuncio.' : 'Error creando anuncio.',
+          ),
+        );
+    } else {
+      this.errorNotify('Los datos del anuncio no están completos');
+    }
+  };
+
+  handleSwitchOpen = () => {
+    this.setState(({ advert, openModal }) => ({
+      photoTemp: advert.photo,
+      openModal: !openModal,
+    }));
+  };
+
+  handleChangePhoto = () => {
+    if (this.state.photoTemp) {
+      this.setState(({ advert, photoTemp }) => {
+        return {
+          advert: {
+            ...advert,
+            photo: photoTemp,
+          },
+          openModal: false,
+        };
+      });
+    } else {
+      this.errorNotify('Debe indicar una URL a una imagen primero');
+    }
+  };
+
+  renderValue = () => {
+    const { advert } = this.state;
+    if (!advert.tags) {
+      return null;
+    }
+    return (
+      <div>
+        {advert.tags.map(value => (
+          <Chip
+            key={value}
+            size="small"
+            label={value}
+            className={`Ad__Tag Ad__Tag--small Ad__Tag--${value}`}
+          />
+        ))}
+      </div>
+    );
+  };
 
   render() {
     const {
@@ -208,7 +305,7 @@ export default class AdvertEdit extends Component {
               color="secondary"
               startIcon={<CancelIcon />}
               component={Link}
-              to={params && params.id ? `/advert/${params.id}` : '/'}
+              to={params.id ? `/advert/${params.id}` : '/'}
             >
               Cancel
             </Button>
@@ -257,133 +354,4 @@ export default class AdvertEdit extends Component {
       </Layout>
     );
   }
-
-  isEditMode = props => {
-    const {
-      match: { params },
-    } = props || this.props;
-    return params.id;
-  };
-
-  getAdvert = () => {
-    const {
-      loadAdvert,
-      match: { params },
-    } = this.props;
-    loadAdvert(params.id);
-  };
-
-  handleChange = ({ target }) => {
-    const { advert } = this.state;
-    advert[target.name] = target.value;
-    this.setState({
-      advert,
-    });
-  };
-
-  handleChangeNumber = ({ target }) => {
-    const { advert } = this.state;
-    advert[target.name] = parseFloat(target.value);
-    if (advert[target.name]) {
-      this.setState({
-        advert,
-      });
-    }
-  };
-
-  handleChangeMultiple = ({ target }) => {
-    // Obtengo el estado, actualizo los tags seleccionados
-    const { advert } = this.state;
-    advert.tags = target.value;
-    // Actualizo el estado
-    this.setState({ advert });
-  };
-
-  // handleSubmit = ev => {
-  //   const { session, enqueueSnackbar, history } = this.props;
-  //   ev.preventDefault();
-  //   const { postAdvert, editAdvert } = NodepopAPI(session.apiUrl);
-  //   // Creo un anuncio con los datos del estado si es válido
-  //   const advert = new Advert(this.state.advert);
-  //   if (advert.isValid()) {
-  //     if (this.isEditMode()) {
-  //       // PUT
-  //       editAdvert(advert)
-  //         .then(res => {
-  //           enqueueSnackbar('OK. Anuncio editado con exito.', {
-  //             variant: 'success',
-  //           });
-  //           history.push(`/advert/${res._id}`);
-  //         })
-  //         .catch(error =>
-  //           enqueueSnackbar('Error editando anuncio.', {
-  //             variant: 'error',
-  //           }),
-  //         );
-  //     } else {
-  //       // POST
-  //       postAdvert(advert)
-  //         .then(res => {
-  //           enqueueSnackbar('OK. Anuncio creado con exito.', {
-  //             variant: 'success',
-  //           });
-  //           history.push(`/advert/${res._id}`);
-  //         })
-  //         .catch(error => {
-  //           enqueueSnackbar('Error creando anuncio.', {
-  //             variant: 'error',
-  //           });
-  //         });
-  //     }
-  //   } else {
-  //     // El anuncio no es completo. Error
-  //     enqueueSnackbar('Los datos del anuncio no están completos', {
-  //       variant: 'error',
-  //     });
-  //   }
-  // };
-
-  handleSwitchOpen = () => {
-    this.setState(({ advert, openModal }) => ({
-      photoTemp: advert.photo,
-      openModal: !openModal,
-    }));
-  };
-
-  handleChangePhoto = () => {
-    // Actualizo la imagen y cierro el modal
-    if (this.state.photoTemp) {
-      this.setState(state => {
-        const { advert, photoTemp } = state;
-        advert.photo = photoTemp;
-        return {
-          advert,
-          openModal: false,
-        };
-      });
-    } else {
-      this.props.enqueueSnackbar('Debe indicar una URL a una imagen primero', {
-        variant: 'error',
-      });
-    }
-  };
-
-  renderValue = () => {
-    const { advert } = this.state;
-    if (advert.tags) {
-      return (
-        <div>
-          {advert.tags.map(value => (
-            <Chip
-              key={value}
-              size="small"
-              label={value}
-              className={`Ad__Tag Ad__Tag--small Ad__Tag--${value}`}
-            />
-          ))}
-        </div>
-      );
-    }
-    return <div />;
-  };
 }

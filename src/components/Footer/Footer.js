@@ -50,7 +50,7 @@ function FooterLinks() {
         <Link className="Footer__link" to="/">
           Home
         </Link>
-        <Link className="Footer__link" to="/advert/create">
+        <Link className="Footer__link" to="/advert/new">
           Crear anuncio
         </Link>
         <a
