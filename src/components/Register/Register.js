@@ -15,7 +15,6 @@ export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: false,
       name: '',
       surname: '',
       remember: false,
@@ -23,7 +22,7 @@ export default class Register extends Component {
   }
 
   render() {
-    const { name, surname, remember, error } = this.state;
+    const { name, surname, remember } = this.state;
     const { endAdornment } = this.props;
     return (
       <div className="Register">
@@ -83,7 +82,6 @@ export default class Register extends Component {
               type="submit"
               variant="contained"
               color="primary"
-              disabled={!!error}
             >
               Login
             </Button>
@@ -91,10 +89,6 @@ export default class Register extends Component {
         </div>
       </div>
     );
-  }
-
-  componentDidMount() {
-    this.checkApiConnection();
   }
 
   handleSubmit = async event => {
@@ -118,33 +112,5 @@ export default class Register extends Component {
     this.setState({
       [name]: type === 'checkbox' ? checked : value,
     });
-  };
-
-  checkApiConnection = () => {
-    const { checkApi, enqueueSnackbar } = this.props;
-    checkApi()
-      .then(() => {
-        // Conectado OK a la API
-        this.setState(
-          {
-            error: false,
-          },
-          () =>
-            enqueueSnackbar('Conectado con éxito a la API', {
-              variant: 'success',
-            }),
-        );
-      })
-      .catch(() => {
-        this.setState(
-          {
-            error: true,
-          },
-          () =>
-            enqueueSnackbar('Error conectando con la API. Revise la URL.', {
-              variant: 'error',
-            }),
-        );
-      });
   };
 }

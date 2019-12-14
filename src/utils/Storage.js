@@ -1,9 +1,3 @@
-/* NPM modules */
-/* Material UI */
-/* Own modules */
-/* Assets */
-/* CSS */
-
 /**
  * Objeto para trabajar con local storage
  */
