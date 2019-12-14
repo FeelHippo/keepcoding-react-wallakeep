@@ -86,8 +86,6 @@ export default class Profile extends Component {
               color="secondary"
               onClick={this.props.userLogout}
               startIcon={<DeleteIcon />}
-              to="/register"
-              component={Link}
             >
               Borrar
             </Button>

@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Profile should render a Profile component 1`] = `
+<Layout
+  sectionTitle="Perfil de usuario"
+>
+  <form
+    autoComplete="off"
+    className="Profile__Form"
+    noValidate={true}
+    onSubmit={[Function]}
+  >
+    <div
+      className="Profile_Picture"
+    >
+      <img
+        alt="user_avatar"
+        src="user.png"
+      />
+    </div>
+    <WithStyles(ForwardRef(FormControl))
+      className="Profile__FormControl"
+      fullWidth={true}
+    >
+      <WithStyles(ForwardRef(InputLabel))
+        htmlFor="type"
+        shrink={true}
+      >
+        Nombre
+      </WithStyles(ForwardRef(InputLabel))>
+      <WithStyles(ForwardRef(Input))
+        name="name"
+        onChange={[Function]}
+        required={true}
+        type="text"
+        value="name"
+      />
+    </WithStyles(ForwardRef(FormControl))>
+    <WithStyles(ForwardRef(FormControl))
+      className="Profile__FormControl"
+      fullWidth={true}
+    >
+      <WithStyles(ForwardRef(InputLabel))
+        htmlFor="type"
+        shrink={true}
+      >
+        Apellido
+      </WithStyles(ForwardRef(InputLabel))>
+      <WithStyles(ForwardRef(Input))
+        name="surname"
+        onChange={[Function]}
+        required={true}
+        type="text"
+        value="surname"
+      />
+    </WithStyles(ForwardRef(FormControl))>
+    <WithStyles(ForwardRef(FormControl))
+      className="Profile__FormControl"
+      fullWidth={true}
+    >
+      <WithStyles(ForwardRef(InputLabel))
+        htmlFor="maxAdverts"
+      >
+        Anuncios por página (Home)
+      </WithStyles(ForwardRef(InputLabel))>
+      <WithStyles(ForwardRef(Input))
+        max={20}
+        min={1}
+        name="maxAdverts"
+        onChange={[Function]}
+        type="number"
+        value={4}
+      />
+    </WithStyles(ForwardRef(FormControl))>
+    <div
+      className="Profile__Footer"
+    >
+      <WithStyles(ForwardRef(Button))
+        className="ButtonWallakeep ButtonWallakeep__Green"
+        color="primary"
+        startIcon={<Memo(SaveIcon) />}
+        type="submit"
+        variant="contained"
+      >
+        Guardar
+      </WithStyles(ForwardRef(Button))>
+      <WithStyles(ForwardRef(Button))
+        color="secondary"
+        onClick={
+          [MockFunction] {
+            "calls": Array [
+              Array [],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
+          }
+        }
+        startIcon={<Memo(DeleteIcon) />}
+        type="button"
+        variant="contained"
+      >
+        Borrar
+      </WithStyles(ForwardRef(Button))>
+    </div>
+  </form>
+</Layout>
+`;

@@ -158,40 +158,6 @@ export const loadAdvert = advertId => async (
   }
 };
 
-// export const createAdvert = advert => async (
-//   dispatch,
-//   getState,
-//   { services: { NodepopAPI }, history },
-// ) => {
-//   const state = getState();
-//   dispatch(createAdvertsRequest());
-//   try {
-//     const { apiUrl } = getSession(state);
-//     const createdAdvert = await NodepopAPI(apiUrl).postAdvert(advert);
-//     dispatch(createAdvertsSuccesfull(createdAdvert));
-//     history.push(`/advert/${createdAdvert._id}`);
-//   } catch (error) {
-//     dispatch(createAdvertsFailure(error));
-//   }
-// };
-
-// export const updateAdvert = advert => async (
-//   dispatch,
-//   getState,
-//   { services: { NodepopAPI }, history },
-// ) => {
-//   const state = getState();
-//   dispatch(updateAdvertsRequest());
-//   try {
-//     const { apiUrl } = getSession(state);
-//     const updatedAdvert = await NodepopAPI(apiUrl).editAdvert(advert);
-//     dispatch(updateAdvertsSuccesfull(updatedAdvert));
-//     history.push(`/advert/${updatedAdvert._id}`);
-//   } catch (error) {
-//     dispatch(createAdvertsFailure(error));
-//   }
-// };
-
 export const createOrUpdateAdvert = advert => async (
   dispatch,
   getState,

@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App should render a App component 1`] = `
+<ErrorBoundary>
+  <Switch>
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "WithSnackbar(Register)",
+            "render": [Function],
+          },
+          "compare": null,
+          "displayName": "Connect(WithSnackbar(Register))",
+          "type": [Function],
+        }
+      }
+      exact={true}
+      path="/register"
+    />
+    <Connect(PrivateRoute)
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "WithSnackbar(Profile)",
+            "render": [Function],
+          },
+          "compare": null,
+          "displayName": "Connect(WithSnackbar(Profile))",
+          "type": [Function],
+        }
+      }
+      exact={true}
+      path="/profile"
+    />
+    <Connect(PrivateRoute)
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "WithSnackbar(Component)",
+            "render": [Function],
+          },
+          "compare": null,
+          "displayName": "Connect(Connect(Connect(WithSnackbar(Component))))",
+          "type": [Function],
+        }
+      }
+      exact={true}
+      path="/advert/new"
+    />
+    <Connect(PrivateRoute)
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "WithSnackbar(Component)",
+            "render": [Function],
+          },
+          "compare": null,
+          "displayName": "Connect(Connect(Connect(WithSnackbar(Component))))",
+          "type": [Function],
+        }
+      }
+      exact={true}
+      path="/advert/:id/edit"
+    />
+    <Connect(PrivateRoute)
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "WithSnackbar(AdvertDetail)",
+            "render": [Function],
+          },
+          "compare": null,
+          "displayName": "Connect(Connect(WithSnackbar(AdvertDetail)))",
+          "type": [Function],
+        }
+      }
+      exact={true}
+      path="/advert/:id"
+    />
+    <Connect(PrivateRoute)
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "WithSnackbar(Home)",
+            "render": [Function],
+          },
+          "compare": null,
+          "displayName": "Connect(Connect(Connect(Connect(WithSnackbar(Home)))))",
+          "type": [Function],
+        }
+      }
+      exact={true}
+      path="/"
+    />
+    <Connect(PrivateRoute)
+      component={[Function]}
+    />
+  </Switch>
+</ErrorBoundary>
+`;
